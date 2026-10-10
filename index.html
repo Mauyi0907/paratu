@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101b1a">
+<title>Un tulipán para ti</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    min-height: 100svh; overflow: hidden; display: grid; place-items: center;
+    font-family: Georgia, "Times New Roman", serif; color: #f5eee4;
+    background:
+      radial-gradient(ellipse at 50% 72%, rgba(45,93,65,.32), transparent 38%),
+      radial-gradient(ellipse at 50% 28%, rgba(100,47,54,.22), transparent 40%),
+      linear-gradient(160deg, #172624, #0b1213 70%);
+  }
+  .scene { width: min(100vw, 760px); height: 100svh; min-height: 520px; position: relative; display: grid; place-items: center; }
+  .stars { position:absolute; inset:0; pointer-events:none; opacity:.6; background-image:
+    radial-gradient(1px 1px at 15% 18%, #e9d9bd 98%, transparent),
+    radial-gradient(1px 1px at 82% 23%, #e9d9bd 98%, transparent),
+    radial-gradient(1.5px 1.5px at 72% 58%, #e9d9bd 98%, transparent),
+    radial-gradient(1px 1px at 24% 68%, #e9d9bd 98%, transparent),
+    radial-gradient(1px 1px at 88% 78%, #e9d9bd 98%, transparent),
+    radial-gradient(1px 1px at 39% 11%, #e9d9bd 98%, transparent); }
+  .copy { position:absolute; top:8%; left:0; right:0; text-align:center; padding:0 20px; z-index:2; animation: fadeIn 2.2s ease both; }
+  .eyebrow { text-transform:uppercase; letter-spacing:.28em; font: 10px/1.5 system-ui,sans-serif; color:#d3b7a0; }
+  h1 { font-size:clamp(30px, 6vw, 48px); font-weight:400; margin:12px 0 8px; letter-spacing:.015em; }
+  .subtitle { font-size:15px; color:#c8c7bb; font-style:italic; }
+  .flower { width:min(84vw, 440px); height:min(72vh, 590px); min-height:390px; position:relative; margin-top:65px; filter: drop-shadow(0 20px 24px rgba(0,0,0,.25)); }
+  svg { width:100%; height:100%; overflow:visible; }
+  .stem { fill:none; stroke:url(#stemGrad); stroke-width:8; stroke-linecap:round; }
+  .leaf { transform-box:fill-box; transform-origin:bottom center; }
+  .leaf-left { animation: leafSway 7s ease-in-out infinite alternate; }
+  .leaf-right { animation: leafSway 8s ease-in-out infinite alternate-reverse; }
+  .petal { transform-box: view-box; transform-origin: 220px 246px; }
+  .back-left { animation: openBackLeft 8s cubic-bezier(.2,.7,.2,1) 1.2s both; }
+  .back-right { animation: openBackRight 8s cubic-bezier(.2,.7,.2,1) 1.2s both; }
+  .side-left { animation: openSideLeft 8s cubic-bezier(.2,.7,.2,1) 1.2s both; }
+  .side-right { animation: openSideRight 8s cubic-bezier(.2,.7,.2,1) 1.2s both; }
+  .front { animation: openFront 8s cubic-bezier(.2,.7,.2,1) 1.2s both; }
+  .center { animation: openCenter 8s cubic-bezier(.2,.7,.2,1) 1.2s both; }
+  @keyframes openBackLeft { 0%,10% { transform:rotate(0deg) translateY(0); } 65%,100% { transform:rotate(-18deg) translateY(-8px); } }
+  @keyframes openBackRight { 0%,10% { transform:rotate(0deg) translateY(0); } 65%,100% { transform:rotate(18deg) translateY(-8px); } }
+  @keyframes openSideLeft { 0%,8% { transform:rotate(0deg) translateX(0); } 68%,100% { transform:rotate(-28deg) translateX(-8px); } }
+  @keyframes openSideRight { 0%,8% { transform:rotate(0deg) translateX(0); } 68%,100% { transform:rotate(28deg) translateX(8px); } }
+  @keyframes openFront { 0%,12% { transform:rotate(0deg) scaleY(1); } 72%,100% { transform:rotate(-2deg) scaleY(.91) translateY(3px); } }
+  @keyframes openCenter { 0%,10% { transform:scale(.88) translateY(5px); } 70%,100% { transform:scale(1.05) translateY(-2px); } }
+  @keyframes leafSway { from { transform:rotate(-1deg); } to { transform:rotate(2deg); } }
+  .ground-glow { position:absolute; width:65%; height:13%; bottom:6%; left:17.5%; border-radius:50%; background:rgba(95,133,86,.15); filter:blur(24px); }
+  .controls { position:absolute; bottom:5%; left:0; right:0; display:flex; justify-content:center; gap:12px; z-index:3; }
+  button { font:12px system-ui,sans-serif; color:#f4e8db; background:rgba(255,255,255,.07); border:1px solid rgba(232,211,190,.38); border-radius:99px; padding:11px 18px; cursor:pointer; backdrop-filter:blur(8px); transition:background .25s, transform .25s; }
+  button:hover { background:rgba(255,255,255,.14); transform:translateY(-1px); }
+  .petal-vein { fill:none; stroke:rgba(255,220,201,.24); stroke-width:1.2; stroke-linecap:round; }
+  .hint { position:absolute; bottom:1.6%; font:10px system-ui,sans-serif; letter-spacing:.08em; color:#8c9b91; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+  }
+</style>
+</head>
+<body>
+<main class="scene">
+  <div class="stars"></div>
+  <header class="copy">
+    <div class="eyebrow">Un pequeño instante de belleza</div>
+    <h1>Florecer, lentamente</h1>
+    <div class="subtitle">A veces, lo más bonito solo necesita tiempo.</div>
+  </header>
+  <div class="flower" aria-label="Ilustración animada de un tulipán rojo que se abre lentamente">
+    <div class="ground-glow"></div>
+    <svg viewBox="0 0 440 590" role="img" aria-label="Tulipán rojo y hojas verdes">
+      <defs>
+        <linearGradient id="stemGrad" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#214b35"/><stop offset=".48" stop-color="#4f8651"/><stop offset="1" stop-color="#183b2d"/></linearGradient>
+        <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6fa568"/><stop offset=".42" stop-color="#326a46"/><stop offset="1" stop-color="#173b2c"/></linearGradient>
+        <linearGradient id="redMain" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9a91"/><stop offset=".24" stop-color="#ed4b55"/><stop offset=".62" stop-color="#bd1838"/><stop offset="1" stop-color="#650d2b"/></linearGradient>
+        <linearGradient id="redLight" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="#ffb0a0"/><stop offset=".35" stop-color="#f45d66"/><stop offset=".75" stop-color="#c51d3d"/><stop offset="1" stop-color="#7c1230"/></linearGradient>
+        <linearGradient id="redDark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b31b3a"/><stop offset=".55" stop-color="#80102f"/><stop offset="1" stop-color="#420d25"/></linearGradient>
+        <radialGradient id="petalGlow" cx="35%" cy="18%" r="80%"><stop stop-color="#ffc0a7" stop-opacity=".8"/><stop offset=".42" stop-color="#fa6470" stop-opacity=".15"/><stop offset="1" stop-color="#5a0928" stop-opacity=".15"/></radialGradient>
+        <linearGradient id="inner" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f77b70"/><stop offset=".5" stop-color="#b51a3a"/><stop offset="1" stop-color="#4a1028"/></linearGradient>
+      </defs>
+      <!-- Stem -->
+      <path class="stem" d="M220 250 C224 330 214 420 222 520"/>
+      <!-- Leaves -->
+      <g class="leaf leaf-left">
+        <path d="M219 435 C172 418 113 374 104 307 C153 324 205 371 219 435Z" fill="url(#leafGrad)"/>
+        <path d="M216 429 C180 391 143 350 109 313" fill="none" stroke="#8ab879" stroke-opacity=".7" stroke-width="2"/>
+        <path d="M178 386 Q159 375 145 373 M196 407 Q177 398 166 394" fill="none" stroke="#a0c28a" stroke-opacity=".3" stroke-width="1.3"/>
+      </g>
+      <g class="leaf leaf-right">
+        <path d="M222 473 C264 433 307 398 330 339 C277 354 235 399 222 473Z" fill="url(#leafGrad)"/>
+        <path d="M226 464 C258 420 290 382 325 345" fill="none" stroke="#8ab879" stroke-opacity=".65" stroke-width="2"/>
+        <path d="M263 414 Q283 399 300 396 M246 439 Q264 425 278 421" fill="none" stroke="#a0c28a" stroke-opacity=".3" stroke-width="1.3"/>
+      </g>
+      <!-- Back petals -->
+      <g class="petal back-left">
+        <path d="M220 256 C177 226 151 177 167 127 C177 94 200 77 216 99 C235 135 232 202 220 256Z" fill="url(#redDark)"/>
+        <path d="M211 235 C189 190 181 145 190 111" class="petal-vein"/>
+        <path d="M220 256 C177 226 151 177 167 127 C177 94 200 77 216 99 C235 135 232 202 220 256Z" fill="url(#petalGlow)"/>
+      </g>
+      <g class="petal back-right">
+        <path d="M221 255 C222 203 235 139 263 108 C283 86 303 111 300 146 C297 194 261 236 221 255Z" fill="url(#redDark)"/>
+        <path d="M232 239 C258 204 279 161 286 124" class="petal-vein"/>
+        <path d="M221 255 C222 203 235 139 263 108 C283 86 303 111 300 146 C297 194 261 236 221 255Z" fill="url(#petalGlow)"/>
+      </g>
+      <!-- Inner cup -->
+      <path d="M179 230 C178 183 194 145 220 140 C248 144 265 185 262 230 C251 252 191 253 179 230Z" fill="url(#inner)"/>
+      <!-- Side petals open outward -->
+      <g class="petal side-left">
+        <path d="M218 254 C178 251 136 223 127 181 C121 152 135 127 153 141 C179 160 205 209 218 254Z" fill="url(#redLight)"/>
+        <path d="M209 243 C184 207 160 172 143 149" class="petal-vein"/>
+        <path d="M218 254 C178 251 136 223 127 181 C121 152 135 127 153 141 C179 160 205 209 218 254Z" fill="url(#petalGlow)"/>
+      </g>
+      <g class="petal side-right">
+        <path d="M221 254 C258 245 298 215 309 177 C318 149 303 128 286 143 C262 164 235 211 221 254Z" fill="url(#redMain)"/>
+        <path d="M229 243 C253 209 279 172 294 151" class="petal-vein"/>
+        <path d="M221 254 C258 245 298 215 309 177 C318 149 303 128 286 143 C262 164 235 211 221 254Z" fill="url(#petalGlow)"/>
+      </g>
+      <!-- Front petal -->
+      <g class="petal front">
+        <path d="M168 217 C162 177 184 121 218 112 C251 119 275 174 269 218 C264 248 244 269 220 273 C193 268 174 247 168 217Z" fill="url(#redMain)"/>
+        <path d="M219 261 C216 221 218 166 218 120" class="petal-vein"/>
+        <path d="M184 235 Q194 248 207 253 M251 234 Q241 248 231 253" class="petal-vein"/>
+        <path d="M168 217 C162 177 184 121 218 112 C251 119 275 174 269 218 C264 248 244 269 220 273 C193 268 174 247 168 217Z" fill="url(#petalGlow)"/>
+      </g>
+      <!-- Soft rim highlight -->
+      <path d="M169 178 C179 143 197 119 218 114 C241 120 259 147 268 179" fill="none" stroke="#ffc0ae" stroke-opacity=".65" stroke-width="2.3" stroke-linecap="round"/>
+      <!-- Inner center petal, opening with cup -->
+      <g class="petal center">
+        <path d="M194 220 C190 189 199 160 219 150 C240 160 249 190 245 220 C237 237 204 238 194 220Z" fill="url(#redLight)"/>
+        <path d="M219 222 C219 198 219 174 219 157" fill="none" stroke="#ffd0b4" stroke-opacity=".6" stroke-width="1.4"/>
+      </g>
+      <!-- Tiny dew drops -->
+      <ellipse cx="178" cy="188" rx="2.2" ry="4" fill="#ffe5d7" opacity=".7" transform="rotate(-20 178 188)"/>
+      <ellipse cx="260" cy="202" rx="1.8" ry="3" fill="#ffe5d7" opacity=".55" transform="rotate(20 260 202)"/>
+    </svg>
+  </div>
+  <div class="controls">
+    <button id="replay" type="button">↻ Ver florecer de nuevo</button>
+    <button id="pause" type="button">Ⅱ Pausar</button>
+  </div>
+  <div class="hint">HECHO CON CALMA, PARA TI</div>
+</main>
+<script>
+  const flower = document.querySelector('.flower');
+  const replay = document.getElementById('replay');
+  const pause = document.getElementById('pause');
+  let paused = false;
+  replay.addEventListener('click', () => {
+    flower.querySelectorAll('.petal').forEach(p => {
+      p.style.animation = 'none';
+      void p.getBoundingClientRect();
+      p.style.animation = '';
+    });
+  });
+  pause.addEventListener('click', () => {
+    paused = !paused;
+    flower.querySelectorAll('*').forEach(el => {
+      el.style.animationPlayState = paused ? 'paused' : 'running';
+    });
+    pause.textContent = paused ? '▶ Continuar' : 'Ⅱ Pausar';
+  });
+</script>
+</body>
+</html>
